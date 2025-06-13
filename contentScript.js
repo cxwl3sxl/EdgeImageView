@@ -114,7 +114,49 @@
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '关闭';
     closeBtn.onclick = () => mask.remove();
-    toolbar.append(rotateBtn, downloadBtn, closeBtn);
+    
+    // 新增刷新按钮
+    const refreshBtn = document.createElement('button');
+    refreshBtn.textContent = '刷新';
+    refreshBtn.onclick = () => {
+        // 重新收集图片
+        const newImgs = Array.from(document.images)
+            .filter(img => img.width > 60 && img.height > 60 && img.src && !img.src.startsWith('data:'));
+        
+        if (newImgs.length === 0) {
+            alert('未找到合适的图片');
+            return;
+        }
+        
+        // 更新当前图片索引和大图
+        current = 0;
+        bigImg.src = newImgs[current].src;
+        scale = 1;
+        rotate = 0;
+        updateTransform();
+        
+        // 清空并重建缩略图区域
+        thumbBar.innerHTML = '';
+        newImgs.forEach((img, idx) => {
+            const thumb = document.createElement('img');
+            thumb.src = img.src;
+            thumb.style.width = '56px';
+            thumb.style.height = '56px';
+            thumb.style.objectFit = 'cover';
+            thumb.style.borderRadius = '6px';
+            thumb.style.cursor = 'pointer';
+            thumb.style.border = idx === current ? '2px solid #fff' : '2px solid transparent';
+            thumb.onclick = () => {
+                current = idx;
+                bigImg.src = newImgs[current].src;
+                scale = 1; rotate = 0; updateTransform();
+                Array.from(thumbBar.children).forEach((t, i) => t.style.border = i === current ? '2px solid #fff' : '2px solid transparent');
+            };
+            thumbBar.appendChild(thumb);
+        });
+    };
+    
+    toolbar.append(rotateBtn, downloadBtn, refreshBtn, closeBtn);
 
     // 缩略图切换条
     const thumbBar = document.createElement('div');
