@@ -1,0 +1,37 @@
+#imageview-entry {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+  transition: box-shadow 0.2s;
+  right: 32px;
+  bottom: 32px;
+}
+#imageview-entry:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+}
+#imageview-album-mask button {
+  background: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  margin: 0 2px;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+}
+#imageview-album-mask button:hover {
+  background: #f0f0f0;
+}
+#imageview-album-mask img {
+  user-select: none;
+}
+#imageview-album-mask div[style*="thumbBar"]::-webkit-scrollbar {
+  height: 8px;
+  background: transparent;
+}
+#imageview-album-mask div[style*="thumbBar"]::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+#imageview-album-mask div[style*="thumbBar"]::-webkit-scrollbar-track {
+  background: transparent;
+}

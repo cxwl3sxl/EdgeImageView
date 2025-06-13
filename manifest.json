@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "图片相册浏览器",
+  "version": "1.0.0",
+  "description": "在网页上提供可拖动入口，筛选并相册式浏览页面所有图片，支持缩放、旋转、下载等功能。",
+  "permissions": ["scripting", "activeTab", "downloads"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "图片相册浏览器"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icon.png", "album.html", "album.js", "album.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
