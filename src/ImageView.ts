@@ -6,6 +6,7 @@ export class ImageView {
     private readonly _mask: HTMLElement;
     private readonly _bigImage: HTMLImageElement;
     private readonly _toolbar: HTMLElement;
+    private readonly _thumbBar: HTMLElement;
     private _images: Array<HTMLImageElement>;
     private _current: number = 0;
     private _scale: number = 1;
@@ -55,10 +56,43 @@ export class ImageView {
         this._toolbar.style.boxShadow = '0 2px 12px rgba(0,0,0,0.25)';
         this._mask.appendChild(this._toolbar);
 
+        this._thumbBar = document.createElement('div');
+        this._thumbBar.style.position = 'fixed';
+        this._thumbBar.style.left = '50%';
+        this._thumbBar.style.transform = 'translateX(-50%)';
+        this._thumbBar.style.bottom = '20px';
+        this._thumbBar.style.display = 'flex';
+        this._thumbBar.style.overflowX = 'auto';
+        this._thumbBar.style.gap = '8px';
+        this._thumbBar.style.margin = '0';
+        this._thumbBar.style.padding = '8px 10px';
+        this._thumbBar.style.maxWidth = '80vw';
+        this._thumbBar.style.background = 'rgba(30,30,30,0.85)';
+        this._thumbBar.style.borderRadius = '8px';
+        this._thumbBar.style.boxShadow = '0 2px 12px rgba(0,0,0,0.25)';
+        this._thumbBar.style.zIndex = "1000001";
+        this._mask.appendChild(this._thumbBar);
+
     }
 
     private _updateTransform() {
         this._bigImage.style.transform = `scale(${this._scale}) rotate(${this._rotate}deg)`;
+    }
+
+    private _switchToImage(e: MouseEvent) {
+        if (e.currentTarget instanceof HTMLElement) {
+            const idx = e.currentTarget.dataset.index;
+            this._current = parseInt(idx!);
+            this._bigImage.src = this._images[this._current].src;
+            this._scale = 1;
+            this._rotate = 0;
+            this._updateTransform();
+            Array.from(this._thumbBar.children).forEach(ele => {
+                if (ele instanceof HTMLElement) {
+                    ele.style.border = parseInt(ele.dataset.index!) === this._current ? '2px solid #00f' : '2px solid transparent'
+                }
+            });
+        }
     }
 
     public show(): void {
@@ -70,6 +104,7 @@ export class ImageView {
     }
 
     public reloadImages(): boolean {
+        this._thumbBar.innerHTML = '';
         const imgs = Array.from(document.images)
             .filter(img => img.width > 60 && img.height > 60 && img.src);
         if (imgs.length === 0) {
@@ -79,6 +114,21 @@ export class ImageView {
         this._images = imgs;
         this._current = 0;
         this._bigImage.src = this._images[this._current].src;
+
+        imgs.forEach((img, idx) => {
+            const thumb = document.createElement('img');
+            thumb.src = img.src;
+            thumb.style.width = '56px';
+            thumb.style.height = '56px';
+            thumb.style.objectFit = 'cover';
+            thumb.style.borderRadius = '6px';
+            thumb.style.cursor = 'pointer';
+            thumb.dataset.index = `${idx}`;
+            thumb.style.border = idx === this._current ? '2px solid #00f' : '2px solid transparent';
+            thumb.addEventListener("click", this._switchToImage.bind(this));
+            this._thumbBar.appendChild(thumb);
+        });
+
         return true;
     }
 
