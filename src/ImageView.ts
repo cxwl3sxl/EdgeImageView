@@ -144,7 +144,7 @@ export class ImageView {
     public reloadImages(): boolean {
         this._thumbBar.innerHTML = '';
         const imgs = Array.from(document.images)
-            .filter(img => img.width > 60 && img.height > 60 && img.src);
+            .filter(img => img.width > 60 && img.height > 60 && img.src && img.id != "imageview-bigimg");
         if (imgs.length === 0) {
             alert('未找到合适的图片');
             return false;
