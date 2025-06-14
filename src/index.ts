@@ -2,6 +2,7 @@ import { CloseButton } from "./CloseBtn";
 import { DownloadButton } from "./DownloadBtn";
 import { DragHelper } from "./DragHelper";
 import { ImageView } from "./ImageView";
+import { RefreshButton } from "./RefreshBtn";
 import { RotateButton } from "./RotateBtn";
 
 const randomImg = 'https://picsum.photos/48?random=' + Math.floor(Math.random() * 1000);
@@ -32,4 +33,5 @@ entry.addEventListener("click", () => {
 
 iv.addTool(new DownloadButton().setImageView(iv));
 iv.addTool(new RotateButton().setImageView(iv));
+iv.addTool(new RefreshButton().setImageView(iv));
 iv.addTool(new CloseButton().setImageView(iv));
