@@ -1,4 +1,6 @@
+import { CloseButton } from "./CloseBtn";
 import { DragHelper } from "./DragHelper";
+import { ImageView } from "./ImageView";
 
 const randomImg = 'https://picsum.photos/48?random=' + Math.floor(Math.random() * 1000);
 // 创建可拖动入口
@@ -19,3 +21,11 @@ entry.style.userSelect = 'none';
 entry.title = '点击查看本页所有图片';
 document.body.appendChild(entry);
 new DragHelper(entry);
+const iv = new ImageView();
+entry.addEventListener("click", () => {
+    iv.show();
+    if (iv.reloadImages()) return;
+    iv.close();
+});
+
+iv.addTool(new CloseButton().setImageView(iv));
