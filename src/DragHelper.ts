@@ -10,9 +10,7 @@ export class DragHelper {
 
     constructor(ele: HTMLElement, clickHandler?: Function) {
         this._ele = ele;
-        this._ele.style.position = this._ele.style.position || "absolute";
-        this._ele.style.top = "100px";
-        this._ele.style.left = "100px";
+        this._ele.style.position = this._ele.style.position || "fixed";
         this._ele.addEventListener("mousedown", this._onMouseDown);
         this._clickHandler = clickHandler;
     }

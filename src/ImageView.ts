@@ -32,7 +32,8 @@ export class ImageView {
 
         this._bigImage = document.createElement('img');
         this._bigImage.id = 'imageview-bigimg';
-        //  this._bigImage.src = this._images[this._current].src;
+        this._bigImage.style.top = "100px";
+        this._bigImage.style.left = "100px";
         this._bigImage.style.maxWidth = '80vw';
         this._bigImage.style.maxHeight = '70vh';
         this._bigImage.style.borderRadius = '8px';
