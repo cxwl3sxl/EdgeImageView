@@ -8,6 +8,8 @@ export class ImageView {
     private readonly _toolbar: HTMLElement;
     private _images: Array<HTMLImageElement>;
     private _current: number = 0;
+    private _scale: number = 1;
+    private _rotate: number = 0;
 
     constructor() {
         this._mask = document.createElement('div');
@@ -55,6 +57,10 @@ export class ImageView {
 
     }
 
+    private _updateTransform() {
+        this._bigImage.style.transform = `scale(${this._scale}) rotate(${this._rotate}deg)`;
+    }
+
     public show(): void {
         document.body.appendChild(this._mask);
     }
@@ -78,5 +84,10 @@ export class ImageView {
 
     public addTool(tool: ITool): void {
         this._toolbar.append(tool.render());
+    }
+
+    public rotate(deg: number): void {
+        this._rotate = deg;
+        this._updateTransform();
     }
 }

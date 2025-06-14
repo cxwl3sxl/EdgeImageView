@@ -1,6 +1,7 @@
 import { CloseButton } from "./CloseBtn";
 import { DragHelper } from "./DragHelper";
 import { ImageView } from "./ImageView";
+import { RotateButton } from "./RotateBtn";
 
 const randomImg = 'https://picsum.photos/48?random=' + Math.floor(Math.random() * 1000);
 // 创建可拖动入口
@@ -29,3 +30,4 @@ entry.addEventListener("click", () => {
 });
 
 iv.addTool(new CloseButton().setImageView(iv));
+iv.addTool(new RotateButton().setImageView(iv));
