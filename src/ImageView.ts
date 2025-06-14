@@ -11,6 +11,7 @@ export class ImageView {
     private _current: number = 0;
     private _scale: number = 1;
     private _rotate: number = 0;
+    private _isShowen: boolean = false;
 
     constructor() {
         this._mask = document.createElement('div');
@@ -74,10 +75,30 @@ export class ImageView {
         this._thumbBar.style.zIndex = "1000001";
         this._mask.appendChild(this._thumbBar);
 
+        document.addEventListener("keyup", this._handleKeyUp.bind(this));
     }
 
     private _updateTransform() {
         this._bigImage.style.transform = `scale(${this._scale}) rotate(${this._rotate}deg)`;
+    }
+
+    private _handleKeyUp(e: KeyboardEvent) {
+        if (!this._isShowen) return;
+        var i = 0;
+        if (e.key == "ArrowRight") {
+            i = 1;
+        }
+        else if (e.key == "ArrowLeft") {
+            i = -1;
+        }
+        else {
+            return;
+        }
+        const newIdx = this._current + i;
+        if (newIdx < 0) return;
+        if (newIdx >= this._images.length) return;
+        this._current = newIdx;
+        this._syncDisplayIndex();
     }
 
     private _scaleImage(e: WheelEvent) {
@@ -94,24 +115,30 @@ export class ImageView {
         if (e.currentTarget instanceof HTMLElement) {
             const idx = e.currentTarget.dataset.index;
             this._current = parseInt(idx!);
-            this._bigImage.src = this._images[this._current].src;
-            this._scale = 1;
-            this._rotate = 0;
-            this._updateTransform();
-            Array.from(this._thumbBar.children).forEach(ele => {
-                if (ele instanceof HTMLElement) {
-                    ele.style.border = parseInt(ele.dataset.index!) === this._current ? '2px solid #00f' : '2px solid transparent'
-                }
-            });
+            this._syncDisplayIndex();
         }
+    }
+
+    private _syncDisplayIndex() {
+        this._bigImage.src = this._images[this._current].src;
+        this._scale = 1;
+        this._rotate = 0;
+        this._updateTransform();
+        Array.from(this._thumbBar.children).forEach(ele => {
+            if (ele instanceof HTMLElement) {
+                ele.style.border = parseInt(ele.dataset.index!) === this._current ? '2px solid #00f' : '2px solid transparent'
+            }
+        });
     }
 
     public show(): void {
         document.body.appendChild(this._mask);
+        this._isShowen = true;
     }
 
     public close(): void {
         this._mask.remove();
+        this._isShowen = false;
     }
 
     public reloadImages(): boolean {
