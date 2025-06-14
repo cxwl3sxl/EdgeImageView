@@ -11,6 +11,7 @@ export class DragHelper {
     constructor(ele: HTMLElement, clickHandler?: Function) {
         this._ele = ele;
         this._ele.style.position = this._ele.style.position || "fixed";
+        this._ele.style.cursor = 'grab';
         this._ele.addEventListener("mousedown", this._onMouseDown);
         this._clickHandler = clickHandler;
     }
@@ -30,6 +31,7 @@ export class DragHelper {
 
     private _onMouseMove = (e: MouseEvent) => {
         if (!this._isDragging) return;
+        this._ele.style.cursor = 'grabbing';
         this._dragCount += 1;
         const deltaX = e.clientX - this._startX;
         const deltaY = e.clientY - this._startY;
@@ -38,6 +40,7 @@ export class DragHelper {
     };
 
     private _onMouseUp = () => {
+        this._ele.style.cursor = 'grab';
         if (!this._isDragging) {
             return;
         }

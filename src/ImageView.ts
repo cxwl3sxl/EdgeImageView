@@ -12,6 +12,7 @@ export class ImageView {
     private _scale: number = 1;
     private _rotate: number = 0;
     private _isShowen: boolean = false;
+    private _oldOverflow: any | undefined;
 
     constructor() {
         this._mask = document.createElement('div');
@@ -60,12 +61,13 @@ export class ImageView {
         this._mask.appendChild(this._toolbar);
 
         this._thumbBar = document.createElement('div');
+        this._thumbBar.className = "custom-scrollbar";
         this._thumbBar.style.position = 'fixed';
         this._thumbBar.style.left = '50%';
         this._thumbBar.style.transform = 'translateX(-50%)';
         this._thumbBar.style.bottom = '20px';
         this._thumbBar.style.display = 'flex';
-        this._thumbBar.style.overflowX = 'auto';
+        //this._thumbBar.style.overflowX = 'auto';
         this._thumbBar.style.gap = '8px';
         this._thumbBar.style.margin = '0';
         this._thumbBar.style.padding = '8px 10px';
@@ -91,6 +93,10 @@ export class ImageView {
         }
         else if (e.key == "ArrowLeft") {
             i = -1;
+        }
+        else if (e.key == "Escape") {
+            this.close();
+            return;
         }
         else {
             return;
@@ -135,18 +141,28 @@ export class ImageView {
     public show(): void {
         if (this._isShowen) return;
         document.body.appendChild(this._mask);
+        this._oldOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
         this._isShowen = true;
     }
 
     public close(): void {
         this._mask.remove();
+        document.body.style.overflow = this._oldOverflow;
         this._isShowen = false;
     }
 
     public reloadImages(): boolean {
         this._thumbBar.innerHTML = '';
-        const imgs = Array.from(document.images)
-            .filter(img => img.width > 60 && img.height > 60 && img.src && img.id != "imageview-bigimg");
+        let imgs: Array<HTMLImageElement> = [];
+        let imgEles = document.getElementsByTagName("img");
+        for (var i = 0; i < imgEles.length; i++) {
+            let img = imgEles[i];
+            if (img.src && img.id != "imageview-bigimg" && img.id != "imageview-entry" && img.width > 5 && img.height > 5) {
+                imgs.push(img);
+            }
+        }
+
         if (imgs.length === 0) {
             alert('未找到合适的图片');
             return false;
