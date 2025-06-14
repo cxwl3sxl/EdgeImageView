@@ -90,4 +90,8 @@ export class ImageView {
         this._rotate = deg;
         this._updateTransform();
     }
+
+    public getCurrentImageSrc(): string {
+        return this._bigImage.src;
+    }
 }

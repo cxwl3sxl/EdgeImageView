@@ -1,4 +1,5 @@
 import { CloseButton } from "./CloseBtn";
+import { DownloadButton } from "./DownloadBtn";
 import { DragHelper } from "./DragHelper";
 import { ImageView } from "./ImageView";
 import { RotateButton } from "./RotateBtn";
@@ -29,5 +30,6 @@ entry.addEventListener("click", () => {
     iv.close();
 });
 
-iv.addTool(new CloseButton().setImageView(iv));
+iv.addTool(new DownloadButton().setImageView(iv));
 iv.addTool(new RotateButton().setImageView(iv));
+iv.addTool(new CloseButton().setImageView(iv));
