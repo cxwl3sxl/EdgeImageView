@@ -132,6 +132,7 @@ export class ImageView {
     }
 
     public show(): void {
+        if (this._isShowen) return;
         document.body.appendChild(this._mask);
         this._isShowen = true;
     }

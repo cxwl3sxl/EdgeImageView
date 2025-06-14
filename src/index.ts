@@ -23,9 +23,8 @@ entry.style.background = '#fff';
 entry.style.userSelect = 'none';
 entry.title = '点击查看本页所有图片';
 document.body.appendChild(entry);
-new DragHelper(entry);
 const iv = new ImageView();
-entry.addEventListener("click", () => {
+new DragHelper(entry, () => {
     iv.show();
     if (iv.reloadImages()) return;
     iv.close();
