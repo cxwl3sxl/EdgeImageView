@@ -37,6 +37,7 @@ export class ImageView {
         this._bigImage.style.borderRadius = '8px';
         this._bigImage.style.boxShadow = '0 4px 24px rgba(0,0,0,0.4)';
         this._bigImage.style.transition = 'transform 0.3s';
+        this._bigImage.addEventListener("wheel", this._scaleImage.bind(this));
         this._mask.appendChild(this._bigImage);
 
         new DragHelper(this._bigImage);
@@ -77,6 +78,16 @@ export class ImageView {
 
     private _updateTransform() {
         this._bigImage.style.transform = `scale(${this._scale}) rotate(${this._rotate}deg)`;
+    }
+
+    private _scaleImage(e: WheelEvent) {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            this._scale += 0.15;
+        } else {
+            this._scale = Math.max(0.2, this._scale - 0.15);
+        }
+        this._updateTransform();
     }
 
     private _switchToImage(e: MouseEvent) {
