@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "res": "copy .\\plugin\\*.* .\\dist\\",
-    "build": "rollup -c && npm run res"
+    "res": "xcopy /E .\\plugin\\*.* .\\dist\\",
+    "clean": "del /F /Q /S dist",
+    "build": "npm run clean && rollup -c && npm run res"
   },
   "author": "",
   "license": "ISC",
